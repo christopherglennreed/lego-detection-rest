@@ -40,8 +40,8 @@ def clean_detections(detections):
                 'yMax': detections['detection_boxes'][i][2],
                 'xMax': detections['detection_boxes'][i][3]
             },
-            'class': int(detections['detection_classes'][0][i]),  # Modified line
-            'label': label_map[int(detections['detection_classes'][0][i])],
+            'class': int(detections['detection_classes'][0][i]), 
+            'label': int(detections['detection_classes'][0][i]),
             'score': detections['detection_scores'][i],
         }
         cleaned.append(d)
