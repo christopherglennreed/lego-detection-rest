@@ -17,7 +17,7 @@ def predict(body):
 
 def detect(img):
     image = tf.image.decode_jpeg(img, channels=3)
-    converted_img  = tf.image.convert_image_dtype(image, tf.float32)[tf.newaxis, ...]
+    converted_img  = tf.image.convert_image_dtype(image, tf.uint8)[tf.newaxis, ...]
     result = detector(converted_img)
     num_detections = len(result["detection_scores"])
 
@@ -40,8 +40,7 @@ def clean_detections(detections):
                 'yMax': detections['detection_boxes'][i][2],
                 'xMax': detections['detection_boxes'][i][3]
             },
-            'class': int(detections['detection_classes'][0][i]),
-            'label':  int(detections['detection_classes'][0][i]),
+            'class': int(detections['detection_classes'][0][i]),  # Modified line
             'score': detections['detection_scores'][i],
         }
         cleaned.append(d)
@@ -52,7 +51,7 @@ def clean_detections(detections):
 def preload_model():
     blank_jpg = tf.io.read_file('blank.jpeg')
     blank_img = tf.image.decode_jpeg(blank_jpg, channels=3)
-    detector(tf.image.convert_image_dtype(blank_img, tf.float32)[tf.newaxis, ...])
+    detector(tf.image.convert_image_dtype(blank_img, tf.uint8)[tf.newaxis, ...])
 
 
 preload_model()
