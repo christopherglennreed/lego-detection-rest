@@ -3,7 +3,7 @@ import base64
 
 model_dir = 'models/openimages_v4_ssd_mobilenet_v2_1'
 saved_model = tf.saved_model.load(model_dir)
-detector = saved_model.signatures['default']
+detector = saved_model.signatures['serving_default']
 
 
 def predict(body):
@@ -40,8 +40,8 @@ def clean_detections(detections):
                 'yMax': detections['detection_boxes'][i][2],
                 'xMax': detections['detection_boxes'][i][3]
             },
-            'class': detections['detection_class_entities'][i].decode('utf-8'),
-            'label': detections['detection_class_entities'][i].decode('utf-8'),
+            'class': int(detections['detection_classes'][0][i]),
+            'label':  int(detections['detection_classes'][0][i]),
             'score': detections['detection_scores'][i],
         }
         cleaned.append(d)
